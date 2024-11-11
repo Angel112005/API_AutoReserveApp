@@ -9,6 +9,7 @@ const Auto = function (auto) {
   this.Transmision = auto.Transmision;
   this.Pasajeros = auto.Pasajeros;
   this.CostoXDia = auto.CostoXDia;
+  this.Estado = auto.Estado;
 };
 
 Auto.create = (newAuto, result) => {
@@ -51,10 +52,31 @@ Auto.getAll = (result) => {
   });
 };
 
+Auto.updateEstadoById = (id, estado, result) => {
+  sql.query(
+    "UPDATE Autos SET Estado = ? WHERE ID_Auto = ?",
+    [estado, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // No se encontró el auto con el ID proporcionado
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log(`Estado del auto con id ${id} actualizado a: ${estado}`);
+      result(null, { id: id, Estado: estado });
+    }
+  );
+};
+
 Auto.updateById = (id, auto, result) => {
   sql.query(
-    "UPDATE Autos SET Matricula = ?, Generacion = ?, CostoXDia = ? WHERE ID_Auto = ?",
-    [auto.Matricula, auto.Generacion, auto.CostoXDia, id],
+    "UPDATE Autos SET Matricula = ?, Generacion = ?, CostoXDia = ?, Estado = ? WHERE ID_Auto = ?",
+    [auto.Matricula, auto.Generacion, auto.CostoXDia, auto.Estado, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

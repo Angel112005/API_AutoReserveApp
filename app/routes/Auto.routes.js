@@ -8,6 +8,8 @@ module.exports = (app) => {
     router.put("/:id", autos.update);
     router.delete("/:id", autos.delete);
     router.delete("/", autos.deleteAll);
+    // Nueva ruta PATCH para actualizar solo el estado de un auto
+    router.patch("/:id/estado", autos.updateEstado);  
   
     app.use("/api/autos", router);
   };

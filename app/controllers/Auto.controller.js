@@ -15,6 +15,7 @@ exports.create = (req, res) => {
     Pasajeros: req.body.Pasajeros,
     CostoXDia: req.body.CostoXDia,
     Generacion: req.body.Generacion,
+    Estado: req.body.Estado
   });
 
   Auto.create(auto, (err, data) => {
@@ -75,5 +76,31 @@ exports.deleteAll = (req, res) => {
   Auto.removeAll((err, data) => {
     if (err) res.status(500).send({ message: err.message || "Some error occurred while removing all autos." });
     else res.send({ message: `All Autos were deleted successfully!` });
+  });
+};
+
+exports.updateEstado = (req, res) => {
+  if (!req.body.Estado) {
+    res.status(400).send({
+      message: "Content can not be empty! Estado is required.",
+    });
+    return;
+  }
+
+  Auto.updateEstadoById(req.params.id, req.body.Estado, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Auto with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error updating Estado of Auto with id " + req.params.id,
+        });
+      }
+    } else {
+      console.log(`Estado del auto con id ${req.params.id} actualizado a: ${req.body.Estado}`);
+      res.send(data);
+    }
   });
 };

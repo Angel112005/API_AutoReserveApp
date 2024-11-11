@@ -74,3 +74,26 @@ exports.deleteAll = (req, res) => {
     else res.send({ message: `All Reservas were deleted successfully!` });
   });
 };
+
+// Nuevo método para obtener reservas con detalles de autos para un usuario específico
+/* exports.findAllWithAutoDetailsByUserId = (req, res) => {
+  Reserva.getAllWithAutoDetailsByUserId(req.params.Id, (err, data) => {
+    if (err) res.status(500).send({ message: err.message || "Some error occurred while retrieving reservas with auto details." });
+    else res.send(data);
+  });
+};
+ */
+exports.getJoin = (req,res) => {
+  Reserva.getAllJoin(req.params.id,(err,data) => {
+    if (err) res.status(500).send({ message: err.message || "Some error occurred while retrieving reservas with auto details." });
+    else res.send(data);
+  })
+}
+
+// Nuevo método para obtener todas las reservas con detalles de autos y usuarios
+exports.findAllReservationsWithDetails = (req, res) => {
+  Reserva.getAllReservationsWithDetails((err, data) => {
+    if (err) res.status(500).send({ message: err.message || "Some error occurred while retrieving reservations with details." });
+    else res.send(data);
+  });
+};
